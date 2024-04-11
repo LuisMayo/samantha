@@ -1,0 +1,8 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+  
+    .game {
+      border: 2px solid red;
+    }
+  }
