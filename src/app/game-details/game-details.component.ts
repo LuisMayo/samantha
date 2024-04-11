@@ -1,6 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, signal } from '@angular/core';
+
+import { CommonModule } from '@angular/common';
 import { invoke } from '@tauri-apps/api';
 
 export interface Achievement {
@@ -28,7 +29,7 @@ export class GameDetailsComponent implements OnInit {
     if(id == null) {
       this.router.navigate(['/']);
     } else {
-      invoke<Achievement[]>("get_achievement_list", {appid: id}).then((achievements) => {
+      invoke<Achievement[]>("get_achievement_list", {appid: +id}).then((achievements) => {
         this.achievements.set(achievements);
       }).catch((e) => alert(e));
     }

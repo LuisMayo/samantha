@@ -5,7 +5,7 @@
       {{games()}}
       <div class="list">
         @for(game of games(); track game.appid) {
-          <span class="game" [routerLink]="'game' + game.appid">{{game.name}}</span>
+          <span class="game" [routerLink]="'game/' + game.appid">{{game.name}}</span>
         }
       </div>
     }

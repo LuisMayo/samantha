@@ -19,7 +19,7 @@ pub fn get_achievement_list(appid: u32) -> Result<Vec<Achievement>, String> {
             let ach_array: Vec<Achievement> = client
                 .user_stats()
                 .get_achievement_names()
-                .unwrap_or_default()
+                .unwrap_or(vec![])
                 .into_iter()
                 .map(|ach_name| {
                     let stats = client.user_stats();
