@@ -1,1 +1,24 @@
-<p>{{achievements() | json}}</p>
+@if (achievements(); as ach) {
+    <table mat-table [dataSource]="ach">
+        <ng-container matColumnDef="icon">
+            <th mat-header-cell *matHeaderCellDef> Icon </th>
+            <td mat-cell *matCellDef="let achievement">
+                @if (achievement.icon) {
+                    <img [src]="'data:image/bmp;base64, ' + achievement.icon"/>
+                }
+            </td>
+        </ng-container>
+        <mat-text-column name="screen_name" headerText="Name"></mat-text-column>
+        <mat-text-column name="description"></mat-text-column>
+        <ng-container matColumnDef="currently_unlocked">
+            <th mat-header-cell *matHeaderCellDef> Currently unlocked </th>
+            <td mat-cell *matCellDef="let achievement">
+                <input type="checkbox" disabled [attr.checked]="achievement.unlocked"/>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="COLUMNS"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: COLUMNS"></tr>
+    </table>
+} @else {
+    <mat-spinner></mat-spinner>
+}

@@ -6,6 +6,8 @@ use steamworks::Client;
 
 mod game_client;
 mod responses;
+pub mod utils;
+mod grid_db;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]

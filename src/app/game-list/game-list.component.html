@@ -1,6 +1,6 @@
 <div class="container">
     @if (games() == null) {
-      Your game list is currently loading
+      <mat-spinner></mat-spinner>
     } @else {
       {{games()}}
       <div class="list">
