@@ -2,12 +2,13 @@ import { Component, signal } from '@angular/core';
 import { Game } from '../types';
 import { invoke } from '@tauri-apps/api';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatCardModule} from '@angular/material/card'; 
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-game-list',
   standalone: true,
-  imports: [RouterModule, MatProgressSpinnerModule],
+  imports: [RouterModule, MatProgressSpinnerModule, MatCardModule],
   templateUrl: './game-list.component.html',
   styleUrl: './game-list.component.css'
 })

@@ -1,13 +1,23 @@
 <div class="container">
-    @if (games() == null) {
-      <mat-spinner></mat-spinner>
-    } @else {
-      {{games()}}
-      <div class="list">
-        @for(game of games(); track game.appid) {
-          <span class="game" [routerLink]="'game/' + game.appid">{{game.name}}</span>
-        }
-      </div>
+  @if (games() == null) {
+  <mat-spinner></mat-spinner>
+  } @else {
+  {{games()}}
+  <div class="list">
+    @for(game of games(); track game.appid) {
+    <mat-card [routerLink]="'game/' + game.appid" class="example-card">
+      <!-- <mat-card-header>
+              <mat-card-title>Shiba Inu</mat-card-title>
+              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            </mat-card-header> -->
+      <img mat-card-image [src]="game.thumb" />
+      <mat-card-content>
+        <h2>
+          {{game.name}}
+        </h2>
+      </mat-card-content>
+    </mat-card>
     }
   </div>
-  
+  }
+</div>
