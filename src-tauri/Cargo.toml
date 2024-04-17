@@ -16,8 +16,9 @@ serde = { version = "1", features = ["derive"] }
 steamlocate = { git = "https://github.com/LuisMayo/steamlocate-rs.git", branch = "feat/locate-multiple" }
 reqwest = { version = "0.12", features = ["json"] }
 serde_json = "1"
-steamworks = "0.11.0"
+steamworks = { version = "0.11.0"}
 base64 = "0.22.0"
+image = {version = "0.25.1", features = ["png"] }
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

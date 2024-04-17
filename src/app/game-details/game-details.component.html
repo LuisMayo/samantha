@@ -3,8 +3,8 @@
         <ng-container matColumnDef="icon">
             <th mat-header-cell *matHeaderCellDef> Icon </th>
             <td mat-cell *matCellDef="let achievement">
-                @if (achievement.icon) {
-                    <img [src]="'data:image/bmp;base64, ' + achievement.icon"/>
+                @if (achievement.image) {
+                    <img [src]="'data:image/png;base64, ' + achievement.image"/>
                 }
             </td>
         </ng-container>
@@ -13,7 +13,7 @@
         <ng-container matColumnDef="currently_unlocked">
             <th mat-header-cell *matHeaderCellDef> Currently unlocked </th>
             <td mat-cell *matCellDef="let achievement">
-                <input type="checkbox" disabled [attr.checked]="achievement.unlocked"/>
+                <input type="checkbox" disabled [checked]="achievement.unlocked"/>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="COLUMNS"></tr>

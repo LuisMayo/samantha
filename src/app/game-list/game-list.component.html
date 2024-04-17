@@ -1,16 +1,16 @@
-<div class="container">
+<div class="">
   @if (games() == null) {
+  Your games are loading
   <mat-spinner></mat-spinner>
   } @else {
-  {{games()}}
   <div class="list">
     @for(game of games(); track game.appid) {
-    <mat-card [routerLink]="'game/' + game.appid" class="example-card">
+    <mat-card [routerLink]="'game/' + game.appid" class="game-card">
       <!-- <mat-card-header>
               <mat-card-title>Shiba Inu</mat-card-title>
               <mat-card-subtitle>Dog Breed</mat-card-subtitle>
             </mat-card-header> -->
-      <img mat-card-image [src]="game.thumb" />
+      <img mat-card-image [src]="game.thumb" width="300px"/>
       <mat-card-content>
         <h2>
           {{game.name}}

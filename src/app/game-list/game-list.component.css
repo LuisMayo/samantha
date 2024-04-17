@@ -1,8 +1,10 @@
-.container {
+  .list {
     display: flex;
     flex-wrap: wrap;
-  
-    .game {
-      border: 2px solid red;
-    }
+    gap: 5px 40px;
+    justify-content: space-around;
+  }
+
+  .game-card {
+    max-width: 400px;
   }

@@ -9,6 +9,7 @@ mod game_client;
 mod responses;
 pub mod utils;
 mod grid_db;
+pub(crate) mod callback_runner;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
