@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
+
 import { Game } from '../types';
-import { invoke } from '@tauri-apps/api';
+import {MatCardModule} from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatCardModule} from '@angular/material/card'; 
 import { RouterModule } from '@angular/router';
+import { invoke } from '@tauri-apps/api';
 
 @Component({
   selector: 'app-game-list',
@@ -14,6 +15,7 @@ import { RouterModule } from '@angular/router';
 })
 export class GameListComponent {
   games = signal<Game[] | null>(null);
+  sortedGames = computed(() => this.games()?.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)))
 
   ngOnInit(): void {
     // TODO esto debe ir por tiempo y usuario?
