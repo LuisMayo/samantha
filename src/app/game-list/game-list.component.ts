@@ -1,21 +1,27 @@
 import { Component, computed, signal } from '@angular/core';
 
 import { Game } from '../types';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { invoke } from '@tauri-apps/api';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-game-list',
   standalone: true,
-  imports: [RouterModule, MatProgressSpinnerModule, MatCardModule],
+  imports: [RouterModule, MatProgressSpinnerModule, MatCardModule, MatInputModule, FormsModule, MatIconModule],
   templateUrl: './game-list.component.html',
   styleUrl: './game-list.component.css'
 })
 export class GameListComponent {
   games = signal<Game[] | null>(null);
-  sortedGames = computed(() => this.games()?.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)))
+  sortedGames = computed(() => this.games()?.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
+  finalGames = computed(() => this.sortedGames()?.filter(game => game.name.toLowerCase().includes(this.searchTerm().toLowerCase())));
+  searchTerm = signal('');
+  manualId = '';
 
   ngOnInit(): void {
     // TODO esto debe ir por tiempo y usuario?
@@ -28,5 +34,9 @@ export class GameListComponent {
         this.games.set(ownedGames);
       }).catch((e) => console.error(e));
     }
+  }
+
+  public inputChange(event: Event) {
+    this.searchTerm.set((event.target as HTMLInputElement).value);
   }
 }

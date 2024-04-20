@@ -3,8 +3,28 @@
   Your games are loading
   <mat-spinner></mat-spinner>
   } @else {
+  <mat-form-field >
+    <mat-label>Game Name</mat-label>
+    <input matInput type="text" [ngModel]="searchTerm()" (input)="inputChange($event)">
+    @if (searchTerm()) {
+      <button matSuffix mat-icon-button aria-label="Clear" class="clear-button" (click)="searchTerm.set('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Manual Game ID</mat-label>
+    <input matInput type="text" [(ngModel)]="manualId">
+    @if (manualId) {
+      <button matSuffix mat-icon-button aria-label="Clear" class="clear-button" [routerLink]="'game/' + manualId">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+    
   <div class="list">
-    @for(game of games(); track game.appid) {
+    @for(game of finalGames(); track game.appid) {
     <mat-card [routerLink]="'game/' + game.appid" class="game-card">
       <!-- <mat-card-header>
               <mat-card-title>Shiba Inu</mat-card-title>

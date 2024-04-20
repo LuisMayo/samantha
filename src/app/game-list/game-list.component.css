@@ -1,10 +1,17 @@
   .list {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
-    gap: 5px 40px;
+    gap: 10px 40px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
     justify-content: space-around;
   }
 
   .game-card {
     max-width: 400px;
+  }
+
+  .clear-button {
+    margin-left: 10px;
+    font-size: 0.3em;
+    margin-top: 12px;
   }

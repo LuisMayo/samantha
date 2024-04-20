@@ -17,6 +17,12 @@ pub struct Achievement {
     image: String,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AchRequest {
+    name: String,
+    unlock: bool,
+}
+
 fn get_image_data(data: Vec<u8>) -> String {
     let img_result = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_vec(64, 64, data);
     // let img_result = image::ImageBuffer::<Rgb<u8>, Vec<u8>>::from_vec(48, 48, data);
@@ -34,6 +40,23 @@ fn get_image_data(data: Vec<u8>) -> String {
         }
     }
 }
+
+#[tauri::command]
+pub fn set_achievements(appid: u32, achievement_list: Vec<AchRequest>) -> Result<(), String> {
+    let result: Result<(), Box<dyn std::error::Error>> = {
+        let init = Client::init_app(appid)?;
+        achievement_list
+        .into_iter()
+        .for_each(|achievement| {
+            init.0.user_stats().achievement(&achievement.name).set()
+        });
+        Ok(());
+    };
+    match result {
+        Ok(_) => return Ok(()),
+        Err(err) => return Err(err.toString)
+    };
+ }
 
 #[tauri::command]
 pub async fn get_achievement_list(appid: u32) -> Result<Vec<Achievement>, String> {
