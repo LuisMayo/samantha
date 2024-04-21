@@ -16,9 +16,21 @@
                 <input type="checkbox" disabled [checked]="achievement.unlocked"/>
             </td>
         </ng-container>
+        <ng-container matColumnDef="toBeUnlocked">
+            <th mat-header-cell *matHeaderCellDef> To Be unlocked </th>
+            <td mat-cell *matCellDef="let achievement">
+                <input type="checkbox" [(ngModel)]="achievement.toBeUnlocked"/>
+            </td>
+        </ng-container>
         <tr mat-header-row *matHeaderRowDef="COLUMNS"></tr>
         <tr mat-row *matRowDef="let myRowData; columns: COLUMNS"></tr>
     </table>
+    @if (isAnyAchievementchanged()){
+        <div class="confirmation-banner">
+            <button>Submit</button>
+        </div>
+    }
+    <div></div>
 } @else {
     <mat-spinner></mat-spinner>
 }

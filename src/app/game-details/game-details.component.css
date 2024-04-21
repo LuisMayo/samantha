@@ -1,0 +1,5 @@
+.confirmation-banner {
+    display: flex;
+    position: sticky;
+    justify-content: right;
+}

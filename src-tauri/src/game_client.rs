@@ -1,11 +1,18 @@
 use std::{io::Cursor, thread, time::Duration};
 
-use base64::{engine::general_purpose::{STANDARD, URL_SAFE}, Engine};
+use base64::{
+    engine::general_purpose::{STANDARD, URL_SAFE},
+    Engine,
+};
 use image::{Rgb, Rgba};
 use serde::{Deserialize, Serialize};
 use steamworks::{stats::AchievementHelper, Client};
+use tauri::Error;
 
-use crate::{callback_runner::Callback_Runner, utils::{request_current_stats, request_icon}};
+use crate::{
+    callback_runner::Callback_Runner,
+    utils::{request_current_stats, request_icon},
+};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Achievement {
@@ -31,7 +38,8 @@ fn get_image_data(data: Vec<u8>) -> String {
         Some(img) => {
             let mut png_data = Vec::<u8>::new();
             let mut cursor = Cursor::new(&mut png_data);
-            img.write_to(&mut cursor, image::ImageFormat::Png).unwrap_or_default();
+            img.write_to(&mut cursor, image::ImageFormat::Png)
+                .unwrap_or_default();
             return STANDARD.encode(png_data);
         }
         None => {
@@ -43,20 +51,33 @@ fn get_image_data(data: Vec<u8>) -> String {
 
 #[tauri::command]
 pub fn set_achievements(appid: u32, achievement_list: Vec<AchRequest>) -> Result<(), String> {
-    let result: Result<(), Box<dyn std::error::Error>> = {
-        let init = Client::init_app(appid)?;
-        achievement_list
-        .into_iter()
-        .for_each(|achievement| {
-            init.0.user_stats().achievement(&achievement.name).set()
-        });
-        Ok(());
-    };
-    match result {
+    match set_achievements_internal(appid, achievement_list) {
         Ok(_) => return Ok(()),
-        Err(err) => return Err(err.toString)
+        Err(err) => return Err(err.to_string()),
     };
- }
+}
+
+fn set_achievements_internal(
+    appid: u32,
+    achievement_list: Vec<AchRequest>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let init = Client::init_app(appid)?;
+    let mut result = true;
+    achievement_list.into_iter().for_each(|achievement| {
+        result = init
+            .0
+            .user_stats()
+            .achievement(&achievement.name)
+            .set()
+            .is_ok()
+            && result;
+    });
+    if result {
+        return Ok(());
+    } else {
+        return Err("There were problems setting some achievements")?;
+    };
+}
 
 #[tauri::command]
 pub async fn get_achievement_list(appid: u32) -> Result<Vec<Achievement>, String> {

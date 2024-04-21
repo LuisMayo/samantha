@@ -52,7 +52,8 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             locate_games,
-            game_client::get_achievement_list
+            game_client::get_achievement_list,
+            game_client::set_achievements
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
