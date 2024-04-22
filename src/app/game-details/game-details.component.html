@@ -27,7 +27,7 @@
     </table>
     @if (isAnyAchievementchanged()){
         <div class="confirmation-banner">
-            <button>Submit</button>
+            <button (click)="processChanges()">Submit</button>
         </div>
     }
     <div></div>

@@ -2,6 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, signal } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
+import { ConfirmationPopupComponent } from '../game-list/confirmation-popup/confirmation-popup.component';
 import { Dialog } from '@angular/cdk/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,16 +30,18 @@ export interface Achievement {
 export class GameDetailsComponent implements OnInit {
   readonly COLUMNS = ['icon', 'screen_name', 'description', 'currently_unlocked', 'toBeUnlocked']
   achievements = signal<Achievement[] | null>(null);
+  id!: number;
   constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    if (id == null) {
+    if (id == null || Number.isNaN(+id)) {
       this.router.navigate(['/']);
     } else {
+      this.id = +id;
       invoke<Omit<Achievement, 'toBeUnlocked'>[]>("get_achievement_list", { appid: +id }).then((achievements) => {
-        this.achievements.set(achievements.map(ach => ({...ach, toBeUnlocked: ach.unlocked})));
+        this.achievements.set(achievements.map(ach => ({ ...ach, toBeUnlocked: ach.unlocked })));
       }).catch((e) => alert(e));
     }
   }
@@ -52,8 +55,15 @@ export class GameDetailsComponent implements OnInit {
   }
 
   processChanges() {
-    if (this.isAnyAchievementchanged()) {
-      
+    const changedAchievements = this.getChangedAchievements();
+    if (changedAchievements) {
+      this.dialog.open(ConfirmationPopupComponent, {
+        data: {
+          onAccept: () => {
+            invoke('set_achievements', { appid: this.id, achievementList: changedAchievements.map((ach) => ({ name: ach.name, unlock: ach.toBeUnlocked })) })
+          }
+        }
+      });
     }
   }
 }

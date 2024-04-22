@@ -12,5 +12,7 @@ import {
   styleUrl: './confirmation-popup.component.css'
 })
 export class ConfirmationPopupComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {onAccept: () => void}) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {onAccept: () => void}) {
+
+  }
 }

@@ -50,29 +50,30 @@ fn get_image_data(data: Vec<u8>) -> String {
 }
 
 #[tauri::command]
-pub fn set_achievements(appid: u32, achievement_list: Vec<AchRequest>) -> Result<(), String> {
-    match set_achievements_internal(appid, achievement_list) {
+pub async fn set_achievements(appid: u32, achievement_list: Vec<AchRequest>) -> Result<(), String> {
+    match set_achievements_internal(appid, achievement_list).await {
         Ok(_) => return Ok(()),
         Err(err) => return Err(err.to_string()),
     };
 }
 
-fn set_achievements_internal(
+async fn set_achievements_internal(
     appid: u32,
     achievement_list: Vec<AchRequest>,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let init = Client::init_app(appid)?;
+    let (client, single_client) = Client::init_app(appid)?;
     let mut result = true;
     achievement_list.into_iter().for_each(|achievement| {
-        result = init
-            .0
+        result = client
             .user_stats()
             .achievement(&achievement.name)
             .set()
             .is_ok()
             && result;
     });
-    if result {
+    let _runner = Callback_Runner::new(single_client);
+    request_current_stats(&client).await;
+    if result && client.user_stats().store_stats().is_ok() {
         return Ok(());
     } else {
         return Err("There were problems setting some achievements")?;
