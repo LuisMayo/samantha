@@ -2,7 +2,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, signal } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
+import { Dialog } from '@angular/cdk/dialog';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { invoke } from '@tauri-apps/api';
@@ -27,7 +29,7 @@ export interface Achievement {
 export class GameDetailsComponent implements OnInit {
   readonly COLUMNS = ['icon', 'screen_name', 'description', 'currently_unlocked', 'toBeUnlocked']
   achievements = signal<Achievement[] | null>(null);
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -47,5 +49,11 @@ export class GameDetailsComponent implements OnInit {
 
   isAnyAchievementchanged() {
     return (this.getChangedAchievements() || []).length > 0;
+  }
+
+  processChanges() {
+    if (this.isAnyAchievementchanged()) {
+      
+    }
   }
 }
