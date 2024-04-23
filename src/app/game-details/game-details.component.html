@@ -11,7 +11,7 @@
         <mat-text-column name="screen_name" headerText="Name"></mat-text-column>
         <mat-text-column name="description"></mat-text-column>
         <ng-container matColumnDef="currently_unlocked">
-            <th mat-header-cell *matHeaderCellDef> Currently unlocked </th>
+            <th mat-header-cell *matHeaderCellDef>Currently unlocked</th>
             <td mat-cell *matCellDef="let achievement">
                 <input type="checkbox" disabled [checked]="achievement.unlocked"/>
             </td>
@@ -25,12 +25,20 @@
         <tr mat-header-row *matHeaderRowDef="COLUMNS"></tr>
         <tr mat-row *matRowDef="let myRowData; columns: COLUMNS"></tr>
     </table>
-    @if (isAnyAchievementchanged()){
-        <div class="confirmation-banner">
-            <button (click)="processChanges()">Submit</button>
-        </div>
-    }
-    <div></div>
+    <div class="confirmation-banner">
+        <button (click)="selectAll()">Select All</button>
+        <button (click)="clearAll()">Clear All</button>
+        <button (click)="invertAllFromOriginal()">Invert All Current Achievements</button>
+        <button (click)="invertAllFromCurrentState()">Invert All Current Selected</button>
+        <div class="filler"></div>
+        @if (isAnyAchievementchanged()){
+            @if (changingAchievements()) {
+                <mat-spinner></mat-spinner>
+            } @else {
+                <button (click)="processChanges()">Submit</button>
+            }
+        }
+    </div>
 } @else {
     <mat-spinner></mat-spinner>
 }
