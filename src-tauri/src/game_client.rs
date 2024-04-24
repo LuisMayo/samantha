@@ -55,13 +55,16 @@ async fn set_achievements_internal(
 ) -> Result<(), Box<dyn std::error::Error>> {
     let (client, single_client) = Client::init_app(appid)?;
     let mut result = true;
-    achievement_list.into_iter().for_each(|achievement| {
-        result = client
-            .user_stats()
-            .achievement(&achievement.name)
-            .set()
-            .is_ok()
-            && result;
+    achievement_list.into_iter().for_each(|achievement_req| {
+        let user_stats = client.user_stats();
+        let achievement = user_stats.achievement(&achievement_req.name);
+        let new_result: bool;
+        if achievement_req.unlock {
+            new_result = achievement.set().is_ok();
+        } else {
+            new_result = achievement.clear().is_ok()
+        }
+        result = new_result && result;
     });
     let _runner = Callback_Runner::new(single_client);
     request_current_stats(&client).await;

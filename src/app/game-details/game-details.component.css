@@ -1,7 +1,10 @@
 .confirmation-banner {
     display: flex;
     position: sticky;
-    justify-content: right;
     bottom: 0;
     background-color: white;
+}
+
+.filler {
+    flex: 1;
 }
