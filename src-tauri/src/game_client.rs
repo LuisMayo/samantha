@@ -4,7 +4,7 @@ use base64::{
     engine::general_purpose::{STANDARD, URL_SAFE},
     Engine,
 };
-use image::{Rgb, Rgba};
+use image::{ImageBuffer, Rgb, Rgba};
 use serde::{Deserialize, Serialize};
 use steamworks::{stats::AchievementHelper, Client};
 use tauri::Error;
@@ -30,23 +30,15 @@ pub struct AchRequest {
     unlock: bool,
 }
 
-fn get_image_data(data: Vec<u8>) -> String {
-    let img_result = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_vec(64, 64, data);
+fn get_image_data(img: ImageBuffer::<Rgba<u8>, Vec<u8>>) -> String {
+    // let img_result = image::ImageBuffer::<Rgba<u8>, Vec<u8>>::from_vec(64, 64, data);
     // let img_result = image::ImageBuffer::<Rgb<u8>, Vec<u8>>::from_vec(48, 48, data);
     // let mut img_result = image::ImageBuffer::from_vec(48, 48, data);
-    match img_result {
-        Some(img) => {
-            let mut png_data = Vec::<u8>::new();
-            let mut cursor = Cursor::new(&mut png_data);
-            img.write_to(&mut cursor, image::ImageFormat::Png)
-                .unwrap_or_default();
-            return STANDARD.encode(png_data);
-        }
-        None => {
-            // println!("{}", err.to_string());
-            return "".to_string();
-        }
-    }
+    let mut png_data = Vec::<u8>::new();
+    let mut cursor = Cursor::new(&mut png_data);
+    img.write_to(&mut cursor, image::ImageFormat::Png)
+        .unwrap_or_default();
+    return STANDARD.encode(png_data);
 }
 
 #[tauri::command]

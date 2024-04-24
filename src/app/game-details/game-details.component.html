@@ -4,7 +4,7 @@
             <th mat-header-cell *matHeaderCellDef> Icon </th>
             <td mat-cell *matCellDef="let achievement">
                 @if (achievement.image) {
-                    <img [src]="'data:image/png;base64, ' + achievement.image"/>
+                    <img [src]="'data:image/png;base64, ' + achievement.image" width="64px"/>
                 }
             </td>
         </ng-container>
