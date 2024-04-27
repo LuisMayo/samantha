@@ -30,5 +30,8 @@ pub fn request_icon(client: &Client, achievement: &AchievementHelper<'_, steamwo
         icon = achievement.get_achievement_icon_v2();
     }
 
+    // thread::sleep(Duration::from_secs(10));
+    // thread::sleep(Duration::from_secs(10));
+
     return icon.unwrap_or_default();
 }
