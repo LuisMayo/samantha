@@ -17,7 +17,7 @@ Samantha is a WIP Steam Achievement Manager for Windows and Linux
    Or if you prefer to run it for development purposes
    `npx tauri dev`
 
-(You might need to clone [Steamworks-rs](https://github.com/Noxime/steamworks-rs) manually and change the location in src/tauri/Cargo.lock )
+(You might need to clone [Steamworks-rs](https://github.com/Noxime/steamworks-rs) manually and change the location in [src/tauri/Cargo.lock](https://github.com/LuisMayo/samantha/blob/main/src-tauri/Cargo.toml) )
 
 ## Contributing
 Since this is a tiny project we don't have strict rules about contributions. Just open a Pull Request to fix any of the project issues or any improvement you have percieved on your own. Any contributions which improve or fix the project will be accepted as long as they don't deviate too much from the project objectives. If you have doubts about whether the PR would be accepted or not you can open an issue before coding to ask for my opini
